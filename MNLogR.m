@@ -1,5 +1,6 @@
 clc
 clear
+clf
 
 load('fisheriris.mat');
 trainRange = [1:1:33] ;
