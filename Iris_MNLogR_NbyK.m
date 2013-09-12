@@ -20,11 +20,24 @@ Ytrain = sp(trainRange, :);
 Xtest = meas(testRange, :);
 
 Ytest = sp(testRange, :);
+
+maxLabel = max(Ytrain)
+
+newYtrain = zeros(size(Ytrain), maxLabel)
+
+for i = 1 : size(Ytrain)
+    newYtrain(i, Ytrain(i, :)) = 1
+end
+
+Ytrain = newYtrain
+
+
 paramMatrix = mnrfit(Xtrain, Ytrain);
 
 Xtest = [ones(size(Xtest), 1), Xtest];
 
 Yprob = Xtest * paramMatrix;
+
 
 predictValue = 0;
 prec = 0;
