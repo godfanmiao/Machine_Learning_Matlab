@@ -2,50 +2,49 @@ clc
 clear
 clf
 
-load('fisheriris.mat');
-trainRange = [1:1:33] ;
-trainRange = [trainRange, [51 : 1 : 51 + 32]];
-trainRange = [trainRange, [101: 1 : 101 + 32]];
-testRange = [34 : 1 : 50];
-testRange = [testRange, [84 : 1 : 100]];
-testRange = [testRange, [134 : 1 : 150]];
+[x1, x2, x3, x4, y] = textread('dataset/iris.data', '%f,%f,%f,%f,%s');
+X = [x1, x2, x3, x4];
+Y = double(nominal(y));
 
-sp = nominal(species);
-sp = double(sp);
+trainRange = [[1:33], [51:83], [101:133]];
+testRange = [[34:50], [84:100], [134:150]];
 
-Xtrain = meas(trainRange, :);
+trainX = X(trainRange, :);
+trainY = Y(trainRange, :);
 
-Ytrain = sp(trainRange, :);
+testX = X(testRange, :);
+testY = Y(testRange, :);
+maxLabel = max(testY);
+paramMatrix = mnrfit(trainX, trainY);
 
-Xtest = meas(testRange, :);
+[testRow, testColumn] = size(testX);
 
-Ytest = sp(testRange, :);
-paramMatrix = mnrfit(Xtrain, Ytrain);
+testX = [ones(testRow, 1), testX];
+probY = testX * paramMatrix;
 
-Xtest = [ones(size(Xtest), 1), Xtest];
+correctCount = 0;
 
-Yprob = Xtest * paramMatrix;
-
-predictValue = 0;
-prec = 0;
-Ypredict = [];
-[testNum, labelNum] = size(Yprob);
-labelNum = labelNum + 1;
-
-for i = 1 : size(Ytest)
-    [maxValue, maxIndex] = max(Yprob(i, :));
-    if maxValue < 0
-        Ypredict(i, :) = labelNum;
+for i = 1 : testRow
+    [maxValue, maxIndex] = max(probY(i, :));
+    if (maxValue < 0)
+        if (testY(i, :) == maxLabel)
+            correctCount = correctCount + 1;
+        end
     else
-        Ypredict(i, :) = maxIndex;
+        if (maxIndex == testY(i, :))
+            correctCount = correctCount + 1;
+        end
+        
     end
-    
-    if Ypredict(i, :) == Ytest(i, :)
-        prec = prec + 1;
-    end       
 end
 
-double(prec) / testNum
+
+sprintf('%s\n%s: %.3f','Iris dataset with Multinomal Logistic Regression.', 'Precision', double(correctCount) / testRow)
+
+    
+
+
+
 
 
 
