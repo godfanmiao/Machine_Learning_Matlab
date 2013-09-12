@@ -2,67 +2,52 @@ clc
 clear
 clf
 
-load('fisheriris.mat');
-trainRange = [1:1:33] ;
-trainRange = [trainRange, [51 : 1 : 51 + 32]];
-trainRange = [trainRange, [101: 1 : 101 + 32]];
-testRange = [34 : 1 : 50];
-testRange = [testRange, [84 : 1 : 100]];
-testRange = [testRange, [134 : 1 : 150]];
+[x1, x2, x3, x4, y] = textread('dataset/iris.data', '%f,%f,%f,%f,%s');
+X = [x1, x2, x3, x4];
+Y = double(nominal(y));
 
-sp = nominal(species);
-sp = double(sp);
+maxLabel = max(Y);
+[row, column] = size(Y);
+newY = zeros(row, maxLabel);
 
-Xtrain = meas(trainRange, :);
-
-Ytrain = sp(trainRange, :);
-
-Xtest = meas(testRange, :);
-
-Ytest = sp(testRange, :);
-
-maxLabel = max(Ytrain)
-
-newYtrain = zeros(size(Ytrain), maxLabel)
-
-for i = 1 : size(Ytrain)
-    newYtrain(i, Ytrain(i, :)) = 1
+for i = 1 : row
+    newY(i, Y(i,:)) = 1;
 end
 
-Ytrain = newYtrain
+Y = newY;
 
+trainRange = [[1 : 33], [51 : 83], [101 : 133]];
+testRange = [[34 : 50], [84 : 100], [134 : 150]];
 
-paramMatrix = mnrfit(Xtrain, Ytrain);
+trainX = X(trainRange, :);
+trainY = Y(trainRange, :);
 
-Xtest = [ones(size(Xtest), 1), Xtest];
+testX = X(testRange, :);
+testY = Y(testRange, :);
 
-Yprob = Xtest * paramMatrix;
+paramMatrix = mnrfit(trainX, trainY);
 
+[testRow, testColumn] = size(testY);
 
-predictValue = 0;
-prec = 0;
-Ypredict = [];
-[testNum, labelNum] = size(Yprob);
-labelNum = labelNum + 1;
+testX = [ones(testRow, 1), testX];
 
-for i = 1 : size(Ytest)
-    [maxValue, maxIndex] = max(Yprob(i, :));
-    if maxValue < 0
-        Ypredict(i, :) = labelNum;
-    else
-        Ypredict(i, :) = maxIndex;
-    end
+probY = testX * paramMatrix;
+
+correctCount = 0;
+
+for i = 1 : testRow
+    [maxValue, maxIndex] = max(probY(i, :));
     
-    if Ypredict(i, :) == Ytest(i, :)
-        prec = prec + 1;
-    end       
+    if(maxValue < 0)
+        if (testY(i, testColumn) == 1)
+            correctCount = correctCount + 1; 
+        end
+    else
+        if(testY(i, maxIndex) == 1)
+            correctCount = correctCount + 1;
+        end
+    end
 end
 
-double(prec) / testNum
-
-
-
-
-
-
+sprintf('%s\n%s: %.3f','Iris dataset with Multinomal Logistic Regression.', 'Precision', double(correctCount) / testRow)
 
