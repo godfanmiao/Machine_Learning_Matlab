@@ -1,8 +1,0 @@
-dataMatrix = load('../dataset/labeled dataset/semeion.data');
-
-X = dataMatrix(:, [1:256]);
-Y = dataMatrix(:, [257:266]);
-trainRange = [1: 1195]
-testRange = [1195:1]
-
-paramMatrix = mnrfit(X, Y);
