@@ -2,7 +2,7 @@ clc
 clear
 clf
 
-[x1, x2, x3, x4, y] = textread('dataset/labeled dataset/iris.data', '%f,%f,%f,%f,%s');
+[x1, x2, x3, x4, y] = textread('../dataset/labeled dataset/iris.data', '%f,%f,%f,%f,%s');
 X = [x1, x2, x3, x4];
 Y = double(nominal(y));
 
