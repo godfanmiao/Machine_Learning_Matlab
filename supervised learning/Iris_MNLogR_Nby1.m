@@ -39,7 +39,7 @@ for i = 1 : testRow
 end
 
 
-sprintf('%s\n%s: %.3f','Iris dataset with Multinomal Logistic Regression.', 'Precision', double(correctCount) / testRow)
+fprintf('%s\n%s: %.3f\n','Iris dataset with Multinomal Logistic Regression.', 'Precision', double(correctCount) / testRow)
 
     
 

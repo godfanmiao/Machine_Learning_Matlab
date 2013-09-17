@@ -28,4 +28,4 @@ for i = 1 : testRow
     end
 end
 
-sprintf('%s\n%s: %.3f','Iris dataset with NB.', 'Precision', double(correctCount) / testRow)
+fprintf('%s\n%s: %.3f\n','Iris dataset with NB.', 'Precision', double(correctCount) / testRow)
