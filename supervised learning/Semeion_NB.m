@@ -30,4 +30,4 @@ for i = 1 : testRow
     end
 end
 
-sprintf('%s\n%s: %.3f','Semieon dataset with NB.', 'Precision', double(correctCount) / testRow)
+fprintf('%s\n%s: %.3f\n','Semieon dataset with NB.', 'Precision', double(correctCount) / testRow)
