@@ -21,7 +21,7 @@ If you are not sure how to choose parameters for your specific problems, please 
 2.  Contact Information
 =======================
 
-FPCA is available at http://www.columbia.edu/~sm2756/FPCA.htm.  Please
+FPCA is available at http://www1.se.cuhk.edu.hk/~sqma/softwares.html.  Please
 feel free to e-mail the author with any comments or suggestions:
 
 	Shiqian Ma  < sm2756@columbia.edu >

@@ -32,7 +32,7 @@ clear all; clc;
 % m = 100; n = m; sr = 0.3; p = round(m*n*sr); r = 2;
 % m = 100; n = m ; p = 5666; sr = p/m/n; r = 10;
 % m = 200; n = m; p = 15665; sr = p/m/n; r = 10;
-m = 500; n = m; p = 49471; sr = p/m/n; r = 10;
+m = 10000; n = m; p = 49471; sr = p/m/n; r = 10;
 % m = 150; n = 300; sr = 0.49; p = round(m*n*sr); r = 10;
 
 % fr is the freedom of set of rank-r matrix, maxr is the maximum rank one
