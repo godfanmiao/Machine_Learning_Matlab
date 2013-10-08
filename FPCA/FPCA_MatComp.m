@@ -68,8 +68,8 @@ for i = 1:opts.mxitr
     s = sigma;
     ind = find(s > 0);
     Ue = U(:,ind); Ve = V(:,ind); s = s(ind); S = diag(s);
-    i
-    nu = tau*mu
+
+    nu = tau*mu;
     S = max(0,S-nu);
     x = Ue*S*Ve';
     s = diag(S);
