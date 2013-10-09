@@ -1,24 +1,38 @@
-function params = getParams()
+function params = getParams(Z, numOfOmigaY, numOfOmigaX)
 
-% step size of matrix Z
-params.tauz = 0.5;
+[n, m] = size(Z);
 
-% step size of bias vector b
-params.taub = 0.5;
+[U, S, V] = svd(Z);
 
-% for each u1, u2, u...
-params.mu = 0.5;
+% final mu 
+params.muf = 1e-2;
 
-% coverge tolerance
-params.tol = 3.0;
+% relative coverge tolerance
+params.tol = 1e-1;
 
 % decay parameter for mu
-params.eta = 0.25;
+params.eta = 0.01;
+
+% max outer iteration
+params.maxOuterItr = 500;
+
+% max inner iteration
+params.maxInnerItr = 100;
+
+params.mus = S(1) * params.eta;
 
 % tradeoff parameter
 params.lamda = 0.5;
+% step size of matrix Z
 
-% max iteration
-params.maxitr = 100;
+% less than min(4 * numOfOmigaY / lamda, numOfOmigaX);
+% params.tauz = min(4 * numOfOmigaY / params.lamda, numOfOmigaX) / 2;
+params.tauz = 0.5;
+
+% step size of bias vector b;
+% less than 4 * numOfOmigaY / (lamda * n);
+% params.taub = 4 * numOfOmigaY / (params.lamda * n) / 2;
+params.taub = 0.5;
+
 
 end

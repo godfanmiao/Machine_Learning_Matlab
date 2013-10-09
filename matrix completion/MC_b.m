@@ -20,13 +20,16 @@ function Out = MC_b(Xtrain, Ytrain, Xtest, Ytest)
     OmigaY = [x, y];
     [r, c] = size(OmigaY);
     numOfOmigaY = r;
-
+    
     Z = [X, Y];
-
-    params = getParams();
-    muf = params.mu;
-
-    for i = 1 : params.maxitr
+    params = getParams(Z, numOfOmigaY, numOfOmigaX);
+    
+    mu = params.mus;
+    muf = params.muf;
+    
+    innerItr = 1;
+    
+    for i = 1 : params.maxOuterItr
         Zp = Z;
         gb = getGB(params.lamda, numOfOmigaY, OmigaY, X, Y, Z, B);
         B = B - params.taub * gb;
@@ -35,19 +38,30 @@ function Out = MC_b(Xtrain, Ytrain, Xtest, Ytest)
 
         [U, S, V] = svd(A);
 
-        S = max(0,S-params.tauz * muf);
+        S = max(0,S-params.tauz * mu);
         Z = U * S * V';
-        if (norm(Zp-Z, 'fro') <= params.tol)
-            Out.Z = Z;
-            Out.B = B;
-            return;
+
+        if (norm(Zp-Z, 'fro') / max(1.0, norm(Zp)) <= params.tol)
+            if(mu == muf)
+                Out.Z = Z;
+                Out.B = B;
+                rank(Z)
+                return;
+            else
+                innerItr = params.maxInnerItr;
+            end
+        else
+            innerItr = innerItr + 1;
+        end
+        
+        if (innerItr == params.maxInnerItr)
+            mu = max(mu * params.eta, muf);
+            innerItr = 1;
         end
     end
     
     Out.Z = Z;
-    Out.B = B;
-    
-    
+    Out.B = B;    
 end
 
     %
