@@ -15,7 +15,9 @@ Z = A * B;
 Xtrain = Z(1:N1, 1:M1);
 Ytrain = Z(1:N1, M1+1:M1+M2);
 Xtest = Z(N1+1:N1+N2, 1:M1);
-Ytest = Z(N1+1:N1+N2, M1+1:M1+M2);
+% Ytest = Z(N1+1:N1+N2, M1+1:M1+M2);
+Ytest = zeros(N2, M2);
+Z = [Xtrain, Ytrain; Xtest, Ytest];
 
 preRank_b = rank(Z)
 Zb = MC_b(Xtrain, Ytrain, Xtest, Ytest);
