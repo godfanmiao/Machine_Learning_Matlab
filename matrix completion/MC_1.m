@@ -33,20 +33,18 @@ function Z = MC_1(Xtrain, Ytrain, Xtest, Ytest)
     
     for i = 1 : params.maxOuterItr
         Zp = Z;
-        gb = getGB(params.lamda, numOfOmigaY, OmigaY, X, Y, Z, B);
-        B = B - params.taub * gb;
-        gz = getGZ(params.lamda, numOfOmigaY, numOfOmigaX, OmigaY, OmigaX, Y, X, Z, B);
+        gz = getGZ(params.lamda, numOfOmigaY, numOfOmigaX, OmigaY, OmigaX, Y, X, Z);
         A = Z - params.tauz * gz;
 
         [U, S, V] = svd(A);
 
         S = max(0,S-params.tauz * mu);
         Z = U * S * V';
+        % projection to vector-1
+        Z(:, 1) = ones(r, 1);
 
         if (norm(Zp-Z, 'fro') / max(1.0, norm(Zp)) <= params.tol)
             if(mu == muf)
-                Out.Z = Z;
-                rank(Z)
                 return;
             else
                 innerItr = params.maxInnerItr;
@@ -59,9 +57,7 @@ function Z = MC_1(Xtrain, Ytrain, Xtest, Ytest)
             mu = max(mu * params.eta, muf);
             innerItr = 1;
         end
-    end
-    
-    Out.Z = Z;
+    end    
 end
 
     %
@@ -78,7 +74,7 @@ function gz = getGZ(lamda, numOfOmigaY, numOfOmigaX, OmigaY, OmigaX, Y, X, Z)
     for k = 1 : numOfOmigaY
         i = OmigaY(k, 1);
         j = OmigaY(k, 2);
-        gz(i, j + columnX + 1) = lamda / numOfOmigaY * (-Y(i, j) / (1 + exp(Y(i, j) * (Z(i, j + columnX + 1) + B(1, j)))));        
+        gz(i, j + columnX + 1) = lamda / numOfOmigaY * (-Y(i, j) / (1 + exp(Y(i, j) * (Z(i, j + columnX + 1)))));        
     end
 
     for k = 1 : numOfOmigaX      

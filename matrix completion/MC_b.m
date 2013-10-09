@@ -2,7 +2,7 @@
 % Tsinghua University
 % fanmiao.cslt.thu@gmail.com
 
-function Out = MC_b(Xtrain, Ytrain, Xtest, Ytest)
+function Z = MC_b(Xtrain, Ytrain, Xtest, Ytest)
 
     [numOfXtrain, demXtrain] = size(Xtrain);
     [numOfYtrain, demYtrain] = size(Ytrain);
@@ -43,9 +43,6 @@ function Out = MC_b(Xtrain, Ytrain, Xtest, Ytest)
 
         if (norm(Zp-Z, 'fro') / max(1.0, norm(Zp)) <= params.tol)
             if(mu == muf)
-                Out.Z = Z;
-                Out.B = B;
-                rank(Z)
                 return;
             else
                 innerItr = params.maxInnerItr;
@@ -58,10 +55,7 @@ function Out = MC_b(Xtrain, Ytrain, Xtest, Ytest)
             mu = max(mu * params.eta, muf);
             innerItr = 1;
         end
-    end
-    
-    Out.Z = Z;
-    Out.B = B;    
+    end  
 end
 
     %

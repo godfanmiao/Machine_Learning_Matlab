@@ -7,5 +7,12 @@ Ytest = zeros(500, 20);
 % Z1 = MC_1(Xtrain, Ytrain, Xtest, Ytest);
 % rank(Z1)
 Z = [Xtrain, Ytrain; Xtest, Ytest];
-prank = rank(Z)
-out = MC_b(Xtrain, Ytrain, Xtest, Ytest);
+preRank_b = rank(Z)
+Zb = MC_b(Xtrain, Ytrain, Xtest, Ytest);
+postRank_b = rank(Zb)
+
+preRank_1 = rank(Z)
+Z1 = MC_1(Xtrain, Ytrain, Xtest, Ytest);
+postRank_1 = rank(Z1)
+
+
