@@ -27,34 +27,30 @@ function Z = MC_b(Xtrain, Ytrain, Xtest, Ytest)
     mu = params.mus;
     muf = params.muf;
     
-    innerItr = 1;
-    
     for i = 1 : params.maxOuterItr
-        Zp = Z;
-        gb = getGB(params.lamda, numOfOmigaY, OmigaY, X, Y, Z, B);
-        B = B - params.taub * gb;
-        gz = getGZ(params.lamda, numOfOmigaY, numOfOmigaX, OmigaY, OmigaX, Y, X, Z, B);
-        A = Z - params.tauz * gz;
 
-        [U, S, V] = svd(A);
+        for j = 1 : params.maxInnerItr
+            Zp = Z;
+            gb = getGB(params.lamda, numOfOmigaY, OmigaY, X, Y, Z, B);
+            B = B - params.taub * gb;
+            gz = getGZ(params.lamda, numOfOmigaY, numOfOmigaX, OmigaY, OmigaX, Y, X, Z, B);
+            A = Z - params.tauz * gz;
 
-        S = max(0,S-params.tauz * mu);
-        Z = U * S * V';
+            [U, S, V] = svd(A);
 
-        if (norm(Zp-Z, 'fro') / max(1.0, norm(Zp)) <= params.tol)
-            if(mu == muf)
-                return;
-            else
-                innerItr = params.maxInnerItr;
+            S = max(0,S-params.tauz * mu);
+            Z = U * S * V';
+
+            norm(Zp-Z, 'fro') / max(1.0, norm(Zp))
+            if (norm(Zp-Z, 'fro') / max(1.0, norm(Zp)) <= params.tol)
+                if(mu == muf)
+                    return;
+                else
+                    break;
+                end
             end
-        else
-            innerItr = innerItr + 1;
         end
-        
-        if (innerItr == params.maxInnerItr)
-            mu = max(mu * params.eta, muf);
-            innerItr = 1;
-        end
+        mu = max(mu * params.eta, muf);
     end  
 end
 

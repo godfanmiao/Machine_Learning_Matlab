@@ -29,34 +29,29 @@ function Z = MC_1(Xtrain, Ytrain, Xtest, Ytest)
     mu = params.mus;
     muf = params.muf;
     
-    innerItr = 1;
-    
     for i = 1 : params.maxOuterItr
-        Zp = Z;
-        gz = getGZ(params.lamda, numOfOmigaY, numOfOmigaX, OmigaY, OmigaX, Y, X, Z);
-        A = Z - params.tauz * gz;
-
-        [U, S, V] = svd(A);
-
-        S = max(0,S-params.tauz * mu);
-        Z = U * S * V';
-        % projection to vector-1
-        Z(:, 1) = ones(r, 1);
-
-        if (norm(Zp-Z, 'fro') / max(1.0, norm(Zp)) <= params.tol)
-            if(mu == muf)
-                return;
-            else
-                innerItr = params.maxInnerItr;
-            end
-        else
-            innerItr = innerItr + 1;
-        end
         
-        if (innerItr == params.maxInnerItr)
-            mu = max(mu * params.eta, muf);
-            innerItr = 1;
+        for j = 1 : params.maxInnerItr
+            Zp = Z;
+            gz = getGZ(params.lamda, numOfOmigaY, numOfOmigaX, OmigaY, OmigaX, Y, X, Z);
+            A = Z - params.tauz * gz;
+
+            [U, S, V] = svd(A);
+
+            S = max(0,S-params.tauz * mu);
+            Z = U * S * V';
+            % projection to vector-1
+            Z(:, 1) = ones(r, 1);
+            norm(Zp-Z, 'fro') / max(1.0, norm(Zp))
+            if (norm(Zp-Z, 'fro') / max(1.0, norm(Zp)) <= params.tol)
+                if(mu == muf)
+                    return;
+                else
+                    break;
+                end
+            end
         end
+        mu = max(mu * params.eta, muf);
     end    
 end
 
