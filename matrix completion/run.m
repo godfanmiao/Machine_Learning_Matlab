@@ -1,9 +1,9 @@
 clear
 clc
-Xtrain = rand(1000, 1000);
-Ytrain = rand(1000, 20);
-Xtest = rand(500, 1000);
-Ytest = zeros(500, 20);
+Xtrain = rand(5000, 2000);
+Ytrain = rand(5000, 100);
+Xtest = rand(2000, 2000);
+Ytest = zeros(2000, 100);
 % Z1 = MC_1(Xtrain, Ytrain, Xtest, Ytest);
 % rank(Z1)
 Z = [Xtrain, Ytrain; Xtest, Ytest];
