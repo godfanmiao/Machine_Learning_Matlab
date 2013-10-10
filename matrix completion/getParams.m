@@ -5,13 +5,13 @@ function params = getParams(Z, numOfOmigaY, numOfOmigaX)
 [U, S, V] = svd(Z);
 
 % final mu 
-params.muf = 1e-2;
+params.muf = 1e-1;
 
 % relative coverge tolerance
-params.tol = 1e-1;
+params.tol = 0.1;
 
 % decay parameter for mu
-params.eta = 0.01;
+params.eta = 0.25;
 
 % max outer iteration
 params.maxOuterItr = 500;

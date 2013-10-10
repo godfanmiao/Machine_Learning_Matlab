@@ -40,8 +40,6 @@ function Z = MC_b(Xtrain, Ytrain, Xtest, Ytest)
 
             S = max(0,S-params.tauz * mu);
             Z = U * S * V';
-
-            norm(Zp-Z, 'fro') / max(1.0, norm(Zp))
             if (norm(Zp-Z, 'fro') / max(1.0, norm(Zp)) <= params.tol)
                 if(mu == muf)
                     return;
